@@ -1,0 +1,72 @@
+﻿@model IEnumerable<DeviceToReturnDto>
+
+@{
+    ViewData["Title"] = "Devices";
+}
+
+<section class="py-10">
+    <div class="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
+        <h2 class="text-4xl font-extrabold text-red-600 tracking-tight drop-shadow-lg">Electrical Devices</h2>
+        <a asp-action="Create" class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-full text-lg font-semibold shadow-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
+            Add Device
+        </a>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var device in Model)
+            {
+                <div class="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 rounded-2xl shadow-2xl border-2 border-gray-800 hover:border-red-600 transition-all duration-200 p-6 pt-12 flex flex-col justify-between group relative">
+                    <div class="absolute top-4 right-4">
+                        <span class="text-xs font-bold px-3 py-1 rounded-full shadow-lg transition-all duration-200 @(device.IsOn ? "bg-green-500 text-gray-900" : "bg-red-600 text-white")" title="Status">
+                            @(device.IsOn ? "ON" : "OFF")
+                        </span>
+                    </div>
+                    <div class="mb-4">
+                        <h3 class="text-2xl font-bold text-white mb-1 truncate" title="@device.Name">@device.Name</h3>
+                        <p class="text-gray-400 text-sm mb-1">Type: <span class="text-white font-medium">@device.Type</span></p>
+                        <p class="text-gray-400 text-sm mb-1">Power: <span class="text-white font-medium">@device.PowerRatingWatts W</span></p>
+                        <p class="text-gray-400 text-sm mb-1">
+                            Created On:
+                            <span class="text-white font-medium" title="@(device.CreatedOn?.ToString("f", System.Globalization.CultureInfo.InvariantCulture) ?? "N/A")">
+                                @(device.CreatedOn.HasValue? device.CreatedOn.Value.ToString("g", System.Globalization.CultureInfo.InvariantCulture) : "N/A")
+                            </span>
+                        </p>
+                        <p class="text-gray-400 text-sm mb-1">
+                            Last Turned On:
+                            <span class="text-white font-medium" title="@(device.LastTurnOn?.ToString("f", System.Globalization.CultureInfo.InvariantCulture) ?? "N/A")">
+                                @(device.LastTurnOn.HasValue? device.LastTurnOn.Value.ToString("g", System.Globalization.CultureInfo.InvariantCulture) : "N/A")
+                            </span>
+                        </p>
+                    </div>
+                    <div class="flex flex-row justify-between items-center mt-6 space-x-2">
+                        <a asp-action="Edit" asp-route-id="@device.Id" class="flex-1 bg-gray-800 hover:bg-gray-700 text-blue-400 hover:text-white px-3 py-2 rounded-lg text-sm font-semibold text-center transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-blue-400" title="Edit Device">
+                            <i data-lucide="edit-3" class="inline w-4 h-4 mr-1 align-text-bottom"></i> Edit
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@device.Id" class="flex-1 bg-gray-800 hover:bg-gray-700 text-red-400 hover:text-white px-3 py-2 rounded-lg text-sm font-semibold text-center transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-red-400" title="Delete Device">
+                            <i data-lucide="trash-2" class="inline w-4 h-4 mr-1 align-text-bottom"></i> Delete
+                        </a>
+                        <a asp-controller="Usage" asp-action="Index" asp-route-deviceId="@device.Id" class="flex-1 bg-gray-800 hover:bg-gray-700 text-green-400 hover:text-white px-3 py-2 rounded-lg text-sm font-semibold text-center transition-all duration-150 focus:outline-none focus:ring-2 focus:ring-green-400" title="View Usages">
+                            <i data-lucide="activity" class="inline w-4 h-4 mr-1 align-text-bottom"></i> Usages
+                        </a>
+                    </div>
+                </div>
+            }
+
+        }
+        else
+        {
+            <div class="col-span-full text-center py-20">
+                <p class="text-gray-400 text-xl">No devices found. <a asp-action="Create" class="text-red-500 hover:underline font-semibold">Create your first device</a>!</p>
+            </div>
+        }
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        if (window.lucide) lucide.createIcons();
+    </script>
+}

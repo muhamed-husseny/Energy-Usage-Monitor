@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Smart Energy Monitor</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        * {
+            transition: all 0.2s ease-in-out;
+        }
+    </style>
+</head>
+@RenderSection("Scripts", required: false)
+<body class="bg-black text-white font-sans min-h-screen flex flex-col">
+
+    <nav class="bg-black shadow-md fixed w-full z-10">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="/" class="text-xl font-bold text-red-600">⚡ Smart Energy</a>
+            <div class="flex items-center space-x-4">
+                <a href="/Device" class="hover:text-red-400 flex items-center">
+                    <i data-lucide="plug" class="w-5 h-5 mr-1"></i> Devices
+                </a>
+                <a href="/Usage?deviceId=1" class="hover:text-red-400 flex items-center">
+                    <i data-lucide="bolt" class="w-5 h-5 mr-1"></i> Usage
+                </a>
+                <a href="#" class="hover:text-red-400 flex items-center opacity-50 pointer-events-none">
+                    <i data-lucide="bar-chart-3" class="w-5 h-5 mr-1"></i> Analytics (soon)
+                </a>
+            </div>
+        </div>
+    </nav>
+    <main class="pt-16 container mx-auto px-6 flex-grow">
+        @RenderBody()
+    </main>
+
+    <footer class="py-6 border-t border-gray-700 text-center text-sm text-gray-400 bg-black">
+        &copy; @DateTime.Now.Year Smart Energy Monitor. All rights reserved.
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>
+

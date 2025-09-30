@@ -1,0 +1,26 @@
+﻿@model DeviceToReturnDto
+
+@{
+    ViewData["Title"] = "Delete Device";
+}
+
+<section class="max-w-xl mx-auto mt-12 bg-gray-900 border border-red-600 shadow-lg rounded-xl p-8 text-white">
+    <h2 class="text-2xl font-bold text-red-500 mb-4">Delete Device</h2>
+
+    <p class="mb-4 text-gray-300">Are you sure you want to delete the following device?</p>
+
+    <div class="mb-6">
+        <p><strong>Name:</strong> @Model.Name</p>
+        <p><strong>Type:</strong> @Model.Type</p>
+        <p><strong>Power:</strong> @Model.PowerRatingWatts W</p>
+    </div>
+
+    <form asp-action="Delete" method="post">
+        <input type="hidden" asp-for="Id" />
+
+        <div class="flex justify-between">
+            <a asp-action="Index" class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg">Cancel</a>
+            <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg">Confirm Delete</button>
+        </div>
+    </form>
+</section>

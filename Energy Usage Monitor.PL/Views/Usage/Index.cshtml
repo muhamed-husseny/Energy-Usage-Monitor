@@ -1,0 +1,78 @@
+﻿@model IEnumerable<DeviceUsageToReturnDto>
+@{
+    ViewData["Title"] = "Device Usage";
+    var deviceId = ViewBag.DeviceId;
+}
+
+<section class="py-10">
+    <div class="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
+        <h2 class="text-4xl font-extrabold text-red-600 tracking-tight drop-shadow-lg">
+            Usage History
+        </h2>
+
+        <div class="flex gap-4">
+            <a asp-controller="Device" asp-action="Index"
+               class="bg-gray-800 hover:bg-gray-700 text-white px-5 py-2 rounded-full text-sm font-semibold shadow transition-all duration-200">
+                ← Back to Devices
+            </a>
+
+            <a asp-action="Create"
+               asp-controller="Usage"
+               asp-route-deviceId="@deviceId"
+               class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-full text-sm font-semibold shadow transition-all duration-200">
+                ➕ Add Usage
+            </a>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var usage in Model)
+            {
+                <div class="bg-gray-900 rounded-xl shadow-lg border border-gray-700 p-6 transition hover:shadow-xl flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-lg font-semibold text-white mb-2">
+                            Duration:
+                            <span class="text-red-400">
+                                @($"{usage.DurationHours * 60:0.##} mins")
+                            </span>
+                        </h3>
+
+                        <p class="text-gray-400 text-sm mb-1">
+                            Start: <span class="text-white font-medium">@usage.StartTime.ToString("g")</span>
+                        </p>
+
+                        <p class="text-gray-400 text-sm mb-1">
+                            End: <span class="text-white font-medium">@usage.EndTime.ToString("g") </span>
+                        </p>
+
+                        <p class="text-gray-400 text-sm mb-1">
+                            Energy Used:
+                            <span class="text-green-400 font-medium">@usage.EnergyConsumedKWh.ToString("0.###") kWh</span>
+                        </p>
+                    </div>
+
+                    <div class="mt-4 flex justify-end">
+                        <a asp-action="Delete" asp-route-usageId="@usage.Id" class="text-red-500 hover:underline">Delete</a>
+                    </div>
+                </div>
+            }
+
+        }
+        else
+        {
+            <div class="col-span-full text-center py-16">
+                <p class="text-gray-400 text-lg">
+                    No usage records found for this device.
+                </p>
+            </div>
+        }
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        if (window.lucide) lucide.createIcons();
+    </script>
+}
